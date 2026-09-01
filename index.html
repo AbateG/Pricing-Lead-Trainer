@@ -7,17 +7,17 @@
 <style>
   :root{
     --ink-900:#0F1B2D;
-    --ink-800:#16263D;
-    --ink-700:#1F3350;
-    --ink-650:#243a5c;
-    --line:#2A3F5C;
-    --line-soft:#22354f;
+    --ink-800:#1C304C;
+    --ink-700:#24395A;
+    --ink-650:#2C4368;
+    --line:#3D5578;
+    --line-soft:#2C4160;
     --parchment:#EDE7DA;
     --muted:#93A0B4;
     --muted-2:#6E7E96;
-    --brass:#C08A3D;
-    --brass-bright:#D9A24E;
-    --brass-dim:#8C6428;
+    --brass:#B28E34;
+    --brass-bright:#D6B45C;
+    --brass-dim:#7D6224;
     --teal:#2FA0A6;
     --teal-dim:#1E6B70;
     --green:#4C9A6A;
@@ -28,20 +28,28 @@
     --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
     --font-mono:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
     --radius:10px;
-    --shadow:0 8px 24px rgba(0,0,0,0.35);
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md:0 1px 2px rgba(0,0,0,0.35), 0 10px 24px rgba(0,0,0,0.32);
+    --shadow-lg:0 2px 4px rgba(0,0,0,0.35), 0 20px 44px rgba(0,0,0,0.4);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:
       radial-gradient(1200px 600px at 15% -10%, rgba(47,160,166,0.08), transparent 60%),
-      radial-gradient(900px 500px at 100% 0%, rgba(192,138,61,0.07), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, rgba(178,142,52,0.07), transparent 55%),
       var(--ink-900);
     color:var(--parchment);
     font-family:var(--font-body);
     line-height:1.55;
     min-height:100vh;
   }
+  @keyframes viewFade{
+    from{opacity:0; transform:translateY(4px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  #app.fade{animation:viewFade .22s var(--ease);}
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
   }
@@ -106,7 +114,10 @@
     border-radius:8px; padding:9px 14px; font-size:12.5px; cursor:pointer;
     display:flex; flex-direction:column; align-items:flex-start; gap:2px;
     text-align:left;
+    box-shadow:var(--shadow-sm);
+    transition:transform .14s var(--ease), border-color .14s var(--ease), box-shadow .14s var(--ease);
   }
+  .stage-tab:hover{transform:translateY(-1px); border-color:var(--teal-dim); box-shadow:var(--shadow-md);}
   .stage-tab .t{font-weight:700; color:var(--parchment); font-size:13px;}
   .stage-tab .p{font-family:var(--font-mono); font-size:10.5px; color:var(--muted-2);}
   .stage-tab.active{border-color:var(--teal); background:var(--ink-700);}
@@ -150,11 +161,13 @@
     border:2px solid var(--line);
     color:var(--muted);
     position:relative; z-index:1;
-    transition:border-color .15s ease, color .15s ease, background .15s ease;
+    transition:border-color .15s var(--ease), color .15s var(--ease), background .15s var(--ease), transform .15s var(--ease), box-shadow .15s var(--ease);
   }
+  .route-node:hover .dot{transform:translateY(-1px); border-color:var(--teal-dim);}
   .route-node.current .dot{border-color:var(--teal); color:var(--teal); box-shadow:0 0 0 4px rgba(47,160,166,0.14);}
-  .route-node.mastered .dot{background:var(--brass); border-color:var(--brass); color:var(--ink-900);}
+  .route-node.mastered .dot{background:var(--brass); border-color:var(--brass); color:var(--ink-900); box-shadow:var(--shadow-sm), 0 0 0 3px rgba(178,142,52,0.16);}
   .route-node.progress .dot{border-color:var(--brass-dim); color:var(--brass-bright);}
+  .route-node.completed .dot{background:var(--teal-dim); border-color:var(--teal); color:var(--parchment);}
   .route-node .label{
     font-size:10.5px; color:var(--muted-2); text-align:center; max-width:70px;
     line-height:1.2;
@@ -171,6 +184,7 @@
     border:1px solid var(--line);
     border-radius:var(--radius);
     padding:14px 16px;
+    box-shadow:var(--shadow-sm);
   }
   .stat-card .num{font-family:var(--font-display); font-size:24px; color:var(--brass-bright);}
   .stat-card .lbl{font-size:11.5px; color:var(--muted); margin-top:2px;}
@@ -184,6 +198,7 @@
     padding:14px 18px;
     margin-bottom:26px;
     flex-wrap:wrap;
+    box-shadow:var(--shadow-md);
   }
   .continue-bar .txt strong{display:block; font-family:var(--font-display); font-size:16px;}
   .continue-bar .txt span{font-size:12.5px; color:var(--muted);}
@@ -219,6 +234,13 @@
     border-radius:var(--radius);
     padding:16px 18px;
     position:relative;
+    box-shadow:var(--shadow-sm);
+    transition:transform .16s var(--ease), box-shadow .16s var(--ease), border-color .16s var(--ease);
+  }
+  .concept-card:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-md);
+    border-color:var(--teal-dim);
   }
   .concept-card .code{
     font-family:var(--font-mono);
@@ -238,7 +260,8 @@
     padding:4px 9px; border-radius:20px; font-weight:700; flex-shrink:0;
   }
   .badge.new{background:var(--ink-700); color:var(--muted-2); border:1px solid var(--line);}
-  .badge.progress{background:rgba(192,138,61,0.15); color:var(--brass-bright); border:1px solid var(--brass-dim);}
+  .badge.progress{background:rgba(178,142,52,0.15); color:var(--brass-bright); border:1px solid var(--brass-dim);}
+  .badge.completed{background:rgba(47,160,166,0.15); color:#7fd4d8; border:1px solid var(--teal-dim);}
   .badge.mastered{background:var(--green-bg); color:#7fcf9e; border:1px solid var(--green);}
 
   /* ---------- Lesson view ---------- */
@@ -284,6 +307,7 @@
   .q-card{
     background:var(--ink-800); border:1px solid var(--line); border-radius:var(--radius);
     padding:22px 22px 20px;
+    box-shadow:var(--shadow-md);
   }
   .q-card .prompt{font-family:var(--font-display); font-size:17px; margin:0 0 18px; line-height:1.45;}
   .opt{
@@ -292,12 +316,56 @@
     color:var(--parchment); border-radius:8px;
     padding:12px 14px; margin-bottom:9px;
     font-size:14px; cursor:pointer;
-    transition:border-color .12s ease, background .12s ease;
+    transition:border-color .14s var(--ease), background .14s var(--ease), transform .1s var(--ease);
   }
-  .opt:hover:not([disabled]){border-color:var(--teal);}
+  .opt:hover:not([disabled]){border-color:var(--teal); background:var(--ink-650); transform:translateX(2px);}
   .opt.correct{background:var(--green-bg); border-color:var(--green); color:#c7f0d4;}
   .opt.incorrect{background:var(--red-bg); border-color:var(--red); color:#f2c9c1;}
   .opt[disabled]{cursor:default;}
+
+  /* ---------- Verdadero/Falso: fila de dos botones, no lista vertical ---------- */
+  #opts.opts-tf{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  #opts.opts-tf .opt{margin-bottom:0; text-align:center; font-weight:700; padding:16px 14px;}
+
+  /* ---------- Emparejar ---------- */
+  .match-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px 14px;}
+  .match-chip{
+    display:block; width:100%; text-align:left;
+    background:var(--ink-700); border:1px solid var(--line);
+    color:var(--parchment); border-radius:8px;
+    padding:11px 13px; margin-bottom:9px;
+    font-size:13px; cursor:pointer;
+    transition:border-color .14s var(--ease), background .14s var(--ease), transform .1s var(--ease);
+  }
+  .match-chip:hover:not([disabled]){border-color:var(--teal); background:var(--ink-650); transform:translateX(2px);}
+  .match-chip.selected{border-color:var(--teal); background:var(--ink-650); box-shadow:0 0 0 2px rgba(47,160,166,0.25);}
+  .match-chip.correct{background:var(--green-bg); border-color:var(--green); color:#c7f0d4;}
+  .match-chip.incorrect{background:var(--red-bg); border-color:var(--red); color:#f2c9c1;}
+  .match-chip[disabled]{cursor:default;}
+  @media (max-width:560px){ .match-grid{grid-template-columns:1fr;} }
+
+  /* ---------- Ordenar ---------- */
+  .order-pool{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
+  .order-chip{
+    background:var(--ink-700); border:1px solid var(--line); color:var(--parchment);
+    border-radius:20px; padding:9px 15px; font-size:13px; cursor:pointer;
+    transition:border-color .14s var(--ease), background .14s var(--ease);
+  }
+  .order-chip:hover{border-color:var(--teal); background:var(--ink-650);}
+  .order-seq{display:flex; flex-direction:column; gap:8px; min-height:44px;}
+  .order-slot{
+    display:flex; align-items:center; gap:10px;
+    background:var(--ink-800); border:1px solid var(--line-soft); border-radius:8px;
+    padding:10px 13px; font-size:13.5px;
+  }
+  .order-num{
+    font-family:var(--font-mono); font-size:11px; font-weight:700;
+    background:var(--brass); color:var(--ink-900);
+    width:20px; height:20px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .order-empty{color:var(--muted-2); font-size:12.5px; font-style:italic;}
+  .order-correct-ref{margin-top:10px; padding-top:10px; border-top:1px solid var(--line); font-size:12.5px; line-height:1.7;}
   .feedback{
     margin-top:14px; padding:13px 15px; border-radius:8px;
     font-size:13.5px; border:1px solid var(--line);
@@ -309,6 +377,7 @@
   .summary-card{
     background:var(--ink-800); border:1px solid var(--line); border-radius:var(--radius);
     padding:26px; text-align:center;
+    box-shadow:var(--shadow-lg);
   }
   .summary-card .score{font-family:var(--font-display); font-size:40px; color:var(--brass-bright);}
   .summary-card .score-lbl{color:var(--muted); font-size:13px; margin-top:2px;}
@@ -316,6 +385,7 @@
   .reflection{
     background:var(--ink-800); border:1px solid var(--line); border-radius:var(--radius);
     padding:20px; margin-top:22px;
+    box-shadow:var(--shadow-sm);
   }
   .reflection .tag{font-family:var(--font-mono); font-size:10.5px; letter-spacing:0.1em; color:var(--teal); text-transform:uppercase;}
   .reflection h4{font-family:var(--font-display); font-size:15.5px; margin:8px 0 12px; font-weight:600;}
@@ -876,6 +946,7 @@ const LESSONS = [
   {
     id:'L16', code:'C-16', stage:1, title:'Uniendo tarifa, costo y margen en una cotización real',
     summary:'Capítulo de cierre de la Etapa 1: cómo se arma una cotización de principio a fin.',
+    sequence:['Definir el alcance según el Incoterm', 'Sumar los componentes de la tarifa (flete base + recargos)', 'Ajustar según tarifa de contrato o spot', 'Aplicar el margen (piso de costo, techo de mercado)'],
     content:[
       'Cierra la Etapa 1 juntando todo: el Incoterm define el alcance del servicio (lección 9). Sobre ese alcance se suman los componentes de tarifa —flete base más recargos como BAF, THC y otros accesorios (lección 10)—, ajustados según si la tarifa es de contrato o spot (lección 11), y siempre dentro del marco regulatorio de FMC, FMCSA y TSA (lecciones 12 y 13).',
       'A ese costo total se le aplica una lógica de margen —piso de cost-plus, techo de mercado (lección 14)—, teniendo en cuenta el riesgo cambiario si aplica (lección 15). El resultado final es la cotización que ve el cliente, construida sobre el mismo vocabulario de costo, tarifa y margen que aprendiste en la Etapa 0.'
@@ -1166,6 +1237,7 @@ const LESSONS = [
   {
     id:'L25', code:'C-25', stage:3, title:'Mapeo del flujo de cotización',
     summary:'Ver el proceso completo, paso a paso, antes de intentar mejorarlo.',
+    sequence:['Recepción de la solicitud', 'Verificación de datos del cliente/carga', 'Consulta de tarifa base con operaciones', 'Cálculo de margen', 'Aprobación (si aplica)', 'Envío de la cotización'],
     content:[
       'Antes de optimizar cualquier proceso hay que verlo completo. El <strong>mapeo de flujo</strong> consiste en listar cada paso desde que llega una solicitud hasta que se envía la cotización, junto con el tiempo que toma cada uno.',
       'Un mapeo típico en pricing incluye: recepción de la solicitud → verificación de datos del cliente/carga → consulta de tarifa base con operaciones → cálculo de margen → aprobación (si aplica) → envío de la cotización.',
@@ -1356,6 +1428,7 @@ const LESSONS = [
   {
     id:'L31', code:'C-31', stage:3, title:'El ciclo de mejora continua aplicado a pricing',
     summary:'PDCA: Planificar, Hacer, Verificar, Actuar — y por qué nunca termina.',
+    sequence:['Planificar un cambio', 'Hacerlo (implementar con un grupo pequeño)', 'Verificar el resultado con los KPIs', 'Actuar (adoptar, ajustar o descartar)'],
     content:[
       'La optimización de procesos no es un proyecto único que se hace una vez y se termina — es un ciclo continuo. Un marco simple y muy usado es <strong>Planificar-Hacer-Verificar-Actuar (PDCA)</strong>.',
       'Aplicado a pricing: Planificar un cambio (por ejemplo, un nuevo template), Hacerlo (implementarlo con un grupo pequeño), Verificar el resultado con los KPIs de la Etapa 2 (¿mejoró el tiempo de respuesta sin bajar el margen?), y Actuar (adoptarlo por completo, ajustarlo, o descartarlo según lo verificado).',
@@ -2379,6 +2452,7 @@ const LESSONS = [
   {
     id:'L64', code:'C-64', stage:7, title:'Síntesis final: simulacro de intercambio de correos en inglés',
     summary:'Cierre de la Etapa 7 y de las ocho etapas completas del entrenamiento.',
+    sequence:['El agente solicita una cotización urgente', 'Pricing responde con la tarifa y su vigencia', 'El agente objeta el precio', 'Pricing sostiene la tarifa con una razón de mercado'],
     content:[
       'Cierra la Etapa 7 y el entrenamiento completo con un simulacro breve: un agente solicita una cotización LCL urgente, pricing responde con la cotización, el agente objeta el precio, y pricing sostiene la tarifa — todo el ciclo de una interacción real en inglés profesional.',
       'Este es el cierre natural de las ocho etapas: el conocimiento de freight forwarding (Etapa 0), tarifas y regulación (Etapa 1), KPIs (Etapa 2), procesos (Etapa 3), colaboración interdepartamental (Etapa 4), gestión de equipo (Etapa 5), redes de agentes (Etapa 6), y ahora la capacidad de ejecutar todo esto en inglés profesional (Etapa 7) — el conjunto completo que el JD describe para el rol de Pricing Lead Senior Analyst.'
@@ -2517,21 +2591,36 @@ async function recordAnswer(questionId, wasCorrect){
 
 /* ---------------------- Helpers de estado por lección ---------------------- */
 function allQuestions(){
-  return LESSONS.flatMap(l => l.questions.map(q => ({...q, lessonId:l.id, lessonCode:l.code})));
+  const core = LESSONS.flatMap(l => l.questions.map(q => ({...q, lessonId:l.id, lessonCode:l.code})));
+  const bonus = LESSONS.flatMap(l => (l.bonusExercises||[]).map(q => ({...q, lessonId:l.id, lessonCode:l.code})));
+  return core.concat(bonus);
 }
 
+/* El estado de una lección se basa SOLO en sus preguntas originales (mc/tf) —
+   los ejercicios bonus (emparejar/ordenar) son práctica adicional con su propia
+   repetición espaciada, pero no bloquean ni definen "completado"/"dominado". */
 function lessonStats(lesson){
   const qs = lesson.questions;
-  let attempted = 0, mastered = 0;
+  let attempted = 0, completedOnce = 0, mastered = 0;
   qs.forEach(q=>{
     const r = progressCache[q.id];
     if(r && r.seen>0) attempted++;
+    if(r && r.box>=1) completedOnce++;
     if(r && r.box>=MASTER_BOX_THRESHOLD) mastered++;
   });
   let status = 'new';
   if(mastered === qs.length) status = 'mastered';
+  else if(completedOnce === qs.length) status = 'completed';
   else if(attempted > 0) status = 'progress';
-  return {attempted, mastered, total:qs.length, status};
+  return {attempted, completedOnce, mastered, total:qs.length, status};
+}
+
+/* "Incompleto" para efectos de navegación = todavía no se respondió todo bien
+   al menos una vez. 'completed' y 'mastered' cuentan como suficiente para avanzar;
+   la profundización hacia 'mastered' ocurre después, vía repaso espaciado. */
+function isIncomplete(lesson){
+  const s = lessonStats(lesson).status;
+  return s === 'new' || s === 'progress';
 }
 
 function lessonsInStage(stageId){
@@ -2539,7 +2628,7 @@ function lessonsInStage(stageId){
 }
 
 function dueCountFor(lessons){
-  const ids = new Set(lessons.flatMap(l => l.questions.map(q=>q.id)));
+  const ids = new Set(lessons.flatMap(l => l.questions.map(q=>q.id).concat((l.bonusExercises||[]).map(q=>q.id))));
   return allQuestions().filter(q=>{
     if(!ids.has(q.id)) return false;
     const r = progressCache[q.id];
@@ -2550,14 +2639,15 @@ function dueCountFor(lessons){
 function stageStats(stageId){
   const lessons = lessonsInStage(stageId);
   const total = lessons.length;
-  let masteredLessons = 0;
+  let masteredLessons = 0, completedLessons = 0;
   let totalQ = 0, masteredQ = 0;
   lessons.forEach(l=>{
     const s = lessonStats(l);
     if(s.status==='mastered') masteredLessons++;
+    if(s.status==='mastered' || s.status==='completed') completedLessons++;
     totalQ += s.total; masteredQ += s.mastered;
   });
-  return {total, masteredLessons, totalQ, masteredQ, dueCount: dueCountFor(lessons)};
+  return {total, masteredLessons, completedLessons, totalQ, masteredQ, dueCount: dueCountFor(lessons)};
 }
 
 function grandStats(){
@@ -2570,17 +2660,52 @@ function grandStats(){
 
 function nextIncompleteInStage(stageId){
   for(const l of lessonsInStage(stageId)){
-    if(lessonStats(l).status !== 'mastered') return l;
+    if(isIncomplete(l)) return l;
   }
   return null;
 }
 
 function nextIncompleteGlobal(){
   for(const l of LESSONS){
-    if(lessonStats(l).status !== 'mastered') return l;
+    if(isIncomplete(l)) return l;
   }
   return null;
 }
+
+/* ---------------------- Ejercicios generados: emparejar y ordenar ----------------------
+   Se derivan de datos que cada lección ya tiene (keyTerms, sequence/steps), así que no
+   requieren autoría nueva de contenido — solo una forma distinta de practicarlo. */
+function buildMatchExercise(lesson){
+  if(!lesson.keyTerms || lesson.keyTerms.length < 3) return null;
+  const pairs = lesson.keyTerms.slice(0, 5).map((k,i)=>({key:'p'+i, term:k.t, def:k.d}));
+  return {
+    id: lesson.id+'MATCH',
+    kind:'match',
+    prompt:'Empareja cada término con su definición correcta.',
+    pairs,
+    explanation:'Repasa los términos clave de la lección si alguno no coincidió.'
+  };
+}
+
+function buildOrderExercise(lesson){
+  const seq = lesson.sequence || (lesson.steps ? lesson.steps.map(s=>s.t) : null);
+  if(!seq || seq.length < 3) return null;
+  return {
+    id: lesson.id+'ORDER',
+    kind:'order',
+    prompt:'Ordena los siguientes pasos en la secuencia correcta.',
+    items: seq,
+    explanation:'Repasa el contenido de la lección para confirmar el orden correcto.'
+  };
+}
+
+/* Enriquecer cada lección con sus ejercicios bonus derivados (una sola vez, al cargar). */
+LESSONS.forEach(l=>{
+  const bonus = [];
+  const m = buildMatchExercise(l); if(m) bonus.push(m);
+  const o = buildOrderExercise(l); if(o) bonus.push(o);
+  l.bonusExercises = bonus;
+});
 
 /* ---------------------- Router ---------------------- */
 function route(){
@@ -2594,8 +2719,21 @@ function route(){
   else if(parts[0]==='quiz' && parts[1]) renderQuiz(parts[1]);
   else if(parts[0]==='review') renderReview();
   else renderDashboard(null);
+  restartViewFade();
 }
 window.addEventListener('hashchange', route);
+
+/* Reinicia la animación de entrada del panel en cada navegación mayor
+   (tablero, lección, inicio de cuestionario, repaso). Las transiciones
+   entre preguntas dentro de un mismo cuestionario se mantienen instantáneas
+   a propósito, para no introducir demora entre responder y leer la siguiente. */
+function restartViewFade(){
+  const el = document.getElementById('app');
+  if(!el) return;
+  el.classList.remove('fade');
+  void el.offsetWidth;
+  el.classList.add('fade');
+}
 
 function esc(s){
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2623,16 +2761,17 @@ function renderDashboard(explicitStageId){
     const isDone = st.masteredLessons===st.total ? 'stage-done' : '';
     return `<button class="stage-tab ${isActive} ${isDone}" onclick="location.hash='#/dashboard/${sm.id}'">
       <span class="t">Etapa ${sm.id} — ${esc(sm.title)}</span>
-      <span class="p">${st.masteredLessons}/${st.total} conceptos</span>
+      <span class="p">${st.completedLessons}/${st.total} completados</span>
     </button>`;
   }).join('');
 
   const routeNav = stageLessons.map(l=>{
     const s = lessonStats(l);
-    const cls = s.status==='mastered' ? 'mastered' : (s.status==='progress' ? 'progress' : '');
+    const cls = s.status;
     const isCurrent = next && next.id===l.id ? 'current' : '';
+    const dotContent = s.status==='mastered' ? '&#10003;' : (s.status==='completed' ? '&#9679;' : l.code.split('-')[1]);
     return `<button class="route-node ${cls} ${isCurrent}" onclick="location.hash='#/lesson/${l.id}'" title="${esc(l.title)}">
-      <span class="dot">${s.status==='mastered' ? '&#10003;' : l.code.split('-')[1]}</span>
+      <span class="dot">${dotContent}</span>
       <span class="label">${esc(l.code)}</span>
     </button>`;
   }).join('');
@@ -2640,6 +2779,7 @@ function renderDashboard(explicitStageId){
   const cards = stageLessons.map(l=>{
     const s = lessonStats(l);
     const badge = s.status==='mastered' ? '<span class="badge mastered">Dominado</span>'
+      : s.status==='completed' ? '<span class="badge completed">Completado</span>'
       : s.status==='progress' ? '<span class="badge progress">En progreso</span>'
       : '<span class="badge new">Sin empezar</span>';
     return `<a class="concept-card" href="#/lesson/${l.id}" style="text-decoration:none;">
@@ -2653,6 +2793,7 @@ function renderDashboard(explicitStageId){
   }).join('');
 
   const nextStageMeta = STAGE_META.find(s=>s.id===stageId+1);
+  const fullyMastered = stats.masteredLessons===stats.total;
   let continueBlock;
   if(next){
     continueBlock = `<div class="continue-bar">
@@ -2661,12 +2802,12 @@ function renderDashboard(explicitStageId){
       </div>`;
   } else if(nextStageMeta){
     continueBlock = `<div class="continue-bar">
-        <div class="txt"><strong>Etapa ${stageId} completada</strong><span>Dominaste los ${stats.total} conceptos de esta etapa. Sigue con la Etapa ${nextStageMeta.id} — ${esc(nextStageMeta.title)}.</span></div>
+        <div class="txt"><strong>Etapa ${stageId} completada</strong><span>Completaste los ${stats.total} conceptos de esta etapa${fullyMastered ? ', todos ya dominados' : ''}. Sigue con la Etapa ${nextStageMeta.id} — ${esc(nextStageMeta.title)}.</span></div>
         <a class="btn brass" href="#/dashboard/${nextStageMeta.id}">Ir a Etapa ${nextStageMeta.id} →</a>
       </div>`;
   } else {
     continueBlock = `<div class="continue-bar">
-        <div class="txt"><strong>Etapa ${stageId} completada</strong><span>Dominaste los ${stats.total} conceptos de esta etapa. Sigue repasando para no perderlos.</span></div>
+        <div class="txt"><strong>Etapa ${stageId} completada</strong><span>${fullyMastered ? `Dominaste los ${stats.total} conceptos de esta etapa. Sigue repasando para no perderlos.` : `Completaste los ${stats.total} conceptos de esta etapa. El repaso espaciado los irá llevando a dominio total.`}</span></div>
         <a class="btn brass" href="#/review">Repasar</a>
       </div>`;
   }
@@ -2752,13 +2893,23 @@ function renderLesson(lessonId){
 /* ---------------------- Vista: Quiz (por lección o repaso) ---------------------- */
 let quizSession = null;
 
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-0.5); }
+
+function detectKind(q){
+  if(q.kind) return q.kind;
+  if(q.options && q.options.length===2 && q.options[0]==='Verdadero' && q.options[1]==='Falso') return 'tf';
+  return 'mc';
+}
+
 function renderQuiz(lessonId){
   const lesson = LESSONS.find(l=>l.id===lessonId);
   if(!lesson){ renderDashboard(); return; }
+  const core = lesson.questions.map(q=>({...q, lessonId:lesson.id, kind:detectKind(q)}));
+  const bonus = (lesson.bonusExercises||[]).map(q=>({...q, lessonId:lesson.id}));
   quizSession = {
     mode:'lesson',
     lesson,
-    questions: lesson.questions.map(q=>({...q, lessonId:lesson.id})),
+    questions: core.concat(bonus),
     index:0,
     correctCount:0,
     answered:false
@@ -2770,7 +2921,7 @@ function renderReview(){
   const due = allQuestions().filter(q=>{
     const r = progressCache[q.id];
     return r && r.seen>0 && r.nextReview <= Date.now();
-  });
+  }).map(q=>({...q, kind:detectKind(q)}));
   if(due.length===0){
     document.getElementById('app').innerHTML = `
       <div class="crumb"><a href="#/dashboard">← Panel</a></div>
@@ -2780,8 +2931,7 @@ function renderReview(){
       </div>`;
     return;
   }
-  // orden aleatorio simple
-  const shuffled = [...due].sort(()=>Math.random()-0.5);
+  const shuffled = shuffle(due);
   quizSession = {
     mode:'review',
     lesson:null,
@@ -2805,32 +2955,56 @@ function renderQuizQuestion(){
   const title = qs.mode==='lesson' ? `${qs.lesson.code} · Cuestionario` : 'Repaso mixto';
   const backHref = qs.mode==='lesson' ? `#/dashboard/${qs.lesson.stage}` : '#/dashboard';
 
+  let bodyHtml;
+  if(q.kind==='match'){
+    qs.matchLocked = {}; qs.matchMistakes = 0; qs.matchSelected = null;
+    qs.matchTermsDisplay = shuffle(q.pairs.map(p=>({key:p.key, label:p.term})));
+    qs.matchDefsDisplay = shuffle(q.pairs.map(p=>({key:p.key, label:p.def})));
+    bodyHtml = `<p class="prompt">${esc(q.prompt)}</p><div id="exerciseBody">${renderMatchHTML(q)}</div>`;
+  } else if(q.kind==='order'){
+    qs.orderPool = shuffle(q.items.map((label,idx)=>({idx, label})));
+    qs.orderPlaced = [];
+    bodyHtml = `<p class="prompt">${esc(q.prompt)}</p><div id="exerciseBody">${renderOrderHTML(q)}</div>`;
+  } else {
+    const optsClass = q.kind==='tf' ? ' opts-tf' : '';
+    bodyHtml = `<p class="prompt">${esc(q.prompt)}</p>
+      <div id="opts" class="${optsClass}">
+        ${q.options.map((opt,i)=>`<button class="opt" data-i="${i}" onclick="answerQuiz(${i})">${esc(opt)}</button>`).join('')}
+      </div>`;
+  }
+
   app.innerHTML = `
     <div class="crumb"><a href="${backHref}">← Panel</a></div>
     <div class="quiz-progress">
-      ${esc(title)} — Pregunta ${qs.index+1} de ${qs.questions.length}
+      ${esc(title)} — ${q.kind==='match'?'Emparejar':q.kind==='order'?'Ordenar':'Pregunta'} ${qs.index+1} de ${qs.questions.length}
       <div class="barbg"><div class="barfg" style="width:${pct}%"></div></div>
     </div>
     <div class="q-card">
-      <p class="prompt">${esc(q.prompt)}</p>
-      <div id="opts">
-        ${q.options.map((opt,i)=>`<button class="opt" data-i="${i}" onclick="answerQuiz(${i})">${esc(opt)}</button>`).join('')}
-      </div>
+      ${bodyHtml}
       <div id="feedback"></div>
       <div id="nextBtnWrap"></div>
     </div>
   `;
 }
 
+/* Vía única de cierre de ejercicio, compartida por los cuatro tipos (mc/tf/match/order) */
+async function finishExercise(id, wasCorrect, feedbackHtml){
+  const qs = quizSession;
+  qs.answered = true;
+  await recordAnswer(id, wasCorrect);
+  if(wasCorrect) qs.correctCount++;
+  document.getElementById('feedback').innerHTML = feedbackHtml;
+  document.getElementById('nextBtnWrap').innerHTML =
+    `<div style="margin-top:16px;"><button class="btn brass" onclick="advanceQuiz()">
+      ${qs.index+1 < qs.questions.length ? 'Siguiente →' : 'Ver resultado →'}
+    </button></div>`;
+}
+
 async function answerQuiz(i){
   const qs = quizSession;
   if(qs.answered) return;
-  qs.answered = true;
   const q = qs.questions[qs.index];
   const wasCorrect = (i === q.correct);
-  if(wasCorrect) qs.correctCount++;
-
-  await recordAnswer(q.id, wasCorrect);
 
   const optBtns = document.querySelectorAll('#opts .opt');
   optBtns.forEach((btn,idx)=>{
@@ -2839,16 +3013,128 @@ async function answerQuiz(i){
     if(idx===i && !wasCorrect) btn.classList.add('incorrect');
   });
 
-  const fb = document.getElementById('feedback');
-  fb.innerHTML = `<div class="feedback ${wasCorrect?'ok':'bad'}">
+  const fbHtml = `<div class="feedback ${wasCorrect?'ok':'bad'}">
       <span class="lbl">${wasCorrect ? 'Correcto.' : 'No es correcto.'}</span>
       ${esc(q.explanation)}
     </div>`;
+  await finishExercise(q.id, wasCorrect, fbHtml);
+}
 
-  document.getElementById('nextBtnWrap').innerHTML =
-    `<div style="margin-top:16px;"><button class="btn brass" onclick="advanceQuiz()">
-      ${quizSession.index+1 < quizSession.questions.length ? 'Siguiente →' : 'Ver resultado →'}
-    </button></div>`;
+/* ---------- Ejercicio: emparejar (clic en término, luego en definición) ---------- */
+function renderMatchHTML(q){
+  const qs = quizSession;
+  const termsHtml = qs.matchTermsDisplay.map(t=>{
+    const locked = qs.matchLocked[t.key];
+    const isSelected = qs.matchSelected===t.key;
+    let cls = 'match-chip';
+    if(locked) cls += locked.correct ? ' correct' : ' incorrect';
+    else if(isSelected) cls += ' selected';
+    return `<button class="${cls}" ${locked?'disabled':''} onclick="selectMatchTerm('${t.key}')">${esc(t.label)}</button>`;
+  }).join('');
+  const defsHtml = qs.matchDefsDisplay.map(d=>{
+    let cls = 'match-chip';
+    let disabled = false;
+    for(const k in qs.matchLocked){
+      if(qs.matchLocked[k].defKey === d.key){
+        disabled = true;
+        cls += qs.matchLocked[k].correct ? ' correct' : ' incorrect';
+        break;
+      }
+    }
+    return `<button class="${cls}" ${disabled?'disabled':''} onclick="selectMatchDef('${d.key}')">${esc(d.label)}</button>`;
+  }).join('');
+  return `<div class="match-grid">
+    <div class="match-col">${termsHtml}</div>
+    <div class="match-col">${defsHtml}</div>
+  </div>`;
+}
+
+function selectMatchTerm(key){
+  const qs = quizSession;
+  if(qs.answered || qs.matchLocked[key]) return;
+  qs.matchSelected = key;
+  document.getElementById('exerciseBody').innerHTML = renderMatchHTML(qs.questions[qs.index]);
+}
+
+async function selectMatchDef(defKey){
+  const qs = quizSession;
+  if(qs.answered || !qs.matchSelected) return;
+  for(const k in qs.matchLocked){ if(qs.matchLocked[k].defKey===defKey) return; }
+  const q = qs.questions[qs.index];
+  const correct = qs.matchSelected === defKey;
+  qs.matchLocked[qs.matchSelected] = {defKey, correct};
+  if(!correct) qs.matchMistakes++;
+  qs.matchSelected = null;
+  document.getElementById('exerciseBody').innerHTML = renderMatchHTML(q);
+
+  if(Object.keys(qs.matchLocked).length === q.pairs.length){
+    const totalPairs = q.pairs.length;
+    const wasCorrect = qs.matchMistakes === 0;
+    const fbHtml = `<div class="feedback ${wasCorrect?'ok':'bad'}">
+        <span class="lbl">${wasCorrect ? '¡Todas correctas!' : `Emparejaste ${totalPairs-qs.matchMistakes} de ${totalPairs} correctamente.`}</span>
+        ${esc(q.explanation)}
+      </div>`;
+    await finishExercise(q.id, wasCorrect, fbHtml);
+  }
+}
+
+/* ---------- Ejercicio: ordenar (clic en cada paso, en el orden correcto) ---------- */
+function renderOrderHTML(q){
+  const qs = quizSession;
+  const poolHtml = qs.orderPool.map(item=>
+    `<button class="order-chip" onclick="pickOrderItem(${item.idx})">${esc(item.label)}</button>`
+  ).join('') || '<span class="order-empty">— sin elementos restantes —</span>';
+  const placedHtml = qs.orderPlaced.map((idx,pos)=>
+    `<div class="order-slot"><span class="order-num">${pos+1}</span>${esc(q.items[idx])}</div>`
+  ).join('') || '<span class="order-empty">Haz clic en los elementos, en el orden que creas correcto.</span>';
+  const showUndo = qs.orderPlaced.length>0 && qs.orderPlaced.length<q.items.length;
+  return `
+    <div class="order-pool">${poolHtml}</div>
+    <div class="order-seq">${placedHtml}</div>
+    ${showUndo ? `<button class="btn ghost small" onclick="undoOrderItem()" style="margin-top:10px;">Deshacer último</button>` : ''}
+  `;
+}
+
+function pickOrderItem(idx){
+  const qs = quizSession;
+  if(qs.answered || qs.orderPlaced.includes(idx)) return;
+  qs.orderPlaced.push(idx);
+  qs.orderPool = qs.orderPool.filter(item=>item.idx!==idx);
+  renderOrderBody();
+}
+
+function undoOrderItem(){
+  const qs = quizSession;
+  if(qs.answered) return;
+  const q = qs.questions[qs.index];
+  const last = qs.orderPlaced.pop();
+  if(last!==undefined) qs.orderPool.push({idx:last, label:q.items[last]});
+  renderOrderBody();
+}
+
+function renderOrderBody(){
+  const qs = quizSession;
+  const q = qs.questions[qs.index];
+  document.getElementById('exerciseBody').innerHTML = renderOrderHTML(q);
+  if(qs.orderPlaced.length === q.items.length) evaluateOrder();
+}
+
+async function evaluateOrder(){
+  const qs = quizSession;
+  if(qs.answered) return;
+  const q = qs.questions[qs.index];
+  const wasCorrect = q.items.every((label,i)=> qs.orderPlaced[i]===i);
+  let detail = '';
+  if(!wasCorrect){
+    detail = '<div class="order-correct-ref"><strong>Orden correcto:</strong><br>' +
+      q.items.map((label,i)=>`${i+1}. ${esc(label)}`).join('<br>') + '</div>';
+  }
+  const fbHtml = `<div class="feedback ${wasCorrect?'ok':'bad'}">
+      <span class="lbl">${wasCorrect ? '¡Orden correcto!' : 'El orden no es correcto.'}</span>
+      ${esc(q.explanation)}
+      ${detail}
+    </div>`;
+  await finishExercise(q.id, wasCorrect, fbHtml);
 }
 
 function advanceQuiz(){
